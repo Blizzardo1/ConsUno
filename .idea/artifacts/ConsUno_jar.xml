@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ConsUno:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ConsUno_jar</output-path>
+    <root id="archive" name="ConsUno.jar">
+      <element id="module-output" name="ConsUno" />
+    </root>
+  </artifact>
+</component>
