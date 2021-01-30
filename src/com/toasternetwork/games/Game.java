@@ -6,6 +6,7 @@ import com.toasternetwork.games.scenes.Title;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Game implements IGameObject {
     private IScene _currentScene;
@@ -13,8 +14,15 @@ public class Game implements IGameObject {
 
     private boolean _isAlive;
 
+    public static Random Random;
+
+    static {
+        Random = new Random();
+    }
+
     @Override
     public void init() {
+
         _isAlive = true;
         _scenes = new HashMap<>();
         Title t = new Title();

@@ -68,8 +68,13 @@ public class Card implements IGameObject {
     @Override
     public void draw(long deltaTime) throws IOException {
         Terminal t = Game.getTerminal();
-        t.setBackgroundColor(TextColor.ANSI.valueOf(_color.getCardColor().toUpperCase(Locale.ROOT)));
-        t.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
+        TextColor bg = TextColor.ANSI.valueOf(String.format("%s%s", _color.getCardColor().toUpperCase(Locale.ROOT), "_BRIGHT"));
+        t.setBackgroundColor(bg);
+        if(bg == TextColor.ANSI.YELLOW_BRIGHT) {
+            t.setForegroundColor(TextColor.ANSI.WHITE);
+        } else {
+            t.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
+        }
         t.putString(_type.getCardName());
         t.resetColorAndSGR();
     }

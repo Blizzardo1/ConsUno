@@ -6,7 +6,7 @@ public class Title implements IScene {
 
     @Override
     public void init() {
-        System.out.println("This works! Title Screen Initialized");
+        // System.out.println("This works! Title Screen Initialized");
     }
 
     @Override

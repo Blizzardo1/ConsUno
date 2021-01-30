@@ -29,7 +29,7 @@ public class Game implements IScene {
 
         _deck = new Deck();
         _discard = new Deck();
-        Players = new Hand[4];
+        Players = new Hand[10];
         _deck.init();
         _deck.shuffle();
         for (int i = 0; i < Players.length; i++) {
@@ -37,17 +37,12 @@ public class Game implements IScene {
             Players[i].init();
             for(int j = 0; j < 8; j++) {
                 Card c = _deck.drawCard();
-                if(c == null) {
-                    // Grab discard and reshuffle
-                    Card dc;
-                    while((dc = _discard.drawCard()) != null) {
-                        _deck.addCard(dc);
-                        _deck.shuffle();
-                    }
-                }
                 Players[i].giveCard(c);
             }
         }
+        Card discard = _deck.drawCard();
+        _discard.addCard(discard);
+        _discard.setTopCard(discard);
     }
 
     @Override
@@ -57,19 +52,33 @@ public class Game implements IScene {
         _terminal.setBackgroundColor(TextColor.ANSI.WHITE_BRIGHT);
         _terminal.flush();
 
+        int deckPosY = _terminal.getTerminalSize().getRows() - 2;
+        _discard.move(7, deckPosY);
+        _discard.draw(deltaTime);
+        _deck.move(1, deckPosY);
         _deck.draw(deltaTime);
         int pc = 1;
+        _terminal.setCursorPosition(1,1);
         for (Hand player : Players) {
             _terminal.setBackgroundColor(TextColor.ANSI.BLACK);
             _terminal.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
-            _terminal.putString(String.format("Player %d: ", pc++));
+            _terminal.putString(String.format("Player %02d: ", pc++));
             player.draw(deltaTime);
-            _terminal.setCursorPosition(0, pc - 1);
+            _terminal.setCursorPosition(1, pc);
         }
     }
 
     @Override
     public void update(long deltaTime) {
+        if(_deck.getCardCount() == 0) {
+            // Grab discard and reshuffle
+            Card dc;
+            while((dc = _discard.drawCard()) != null) {
+                _deck.addCard(dc);
+                _deck.shuffle();
+            }
+        }
+
         _deck.update(deltaTime);
         for(Hand player : Players) {
             player.update(deltaTime);

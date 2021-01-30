@@ -9,7 +9,8 @@ public enum CardColor {
     Green(1,"Green"),
     Blue(2,"Blue"),
     Yellow(3,"Yellow"),
-    Black(4,"Black");
+    Black(4,"Black"),
+    Gray(5, "Gray");
 
     private static final Map<Integer, CardColor> lookup = new HashMap<>();
 
@@ -32,6 +33,7 @@ public enum CardColor {
 
     public int getColorCode() {
         switch (this) {
+            case Gray: return 8;
             case Red: return 9;
             case Green: return 10;
             case Yellow: return 11;
