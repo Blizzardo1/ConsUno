@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A representation of the card's type
+ */
 public enum CardType {
     Zero(0, "| 0 |"),
     One(1, "| 1 |"),
@@ -34,20 +37,32 @@ public enum CardType {
         }
     }
 
-
     CardType(int type, String name) {
         _type = type;
         _name = name;
     }
 
+    /**
+     * Gets the CardType at the specified index
+     * @param index The specified index of which to retrieve the CardType.
+     * @return The CardType based on the index
+     */
     public static CardType get(int index) {
         return lookup.get(index);
     }
 
+    /**
+     * Get's the Card in the form of an Integer
+     * @return The Integer representation of the CardType.
+     */
     public int getCard() {
         return _type;
     }
 
+    /**
+     * Gets the card's name
+     * @return A String representing the Name
+     */
     public String getCardName() {
         return _name;
     }

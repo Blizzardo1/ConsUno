@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * An implementation of a Deck of Cards or a Discard Pile
+ */
 public class Deck implements IGameObject {
     private final ArrayList<Card> _cards;
     private int _x;
@@ -17,11 +20,18 @@ public class Deck implements IGameObject {
 
     private Card _currCard;
 
+    /**
+     * A New Deck of Cards
+     */
     public Deck() {
         _cards = new ArrayList<>();
         _currCard = new Card(CardType.Face, CardColor.Red);
     }
 
+    /**
+     * Draws a card from the deck.
+     * @return A Card
+     */
     public Card drawCard() {
         if(getCardCount() == 0){
             return null;
@@ -31,6 +41,10 @@ public class Deck implements IGameObject {
         return c;
     }
 
+    /**
+     * Adds a new card to the Deck.
+     * @param c The card to add to the Deck.
+     */
     public void addCard(Card c) {
         _cards.add(c);
     }
@@ -55,9 +69,14 @@ public class Deck implements IGameObject {
             _cards.add(new Card(CardType.DrawFour, CardColor.Black));
         }
 
+        // DEBUG: Show the card count
         // System.out.printf("Card Count: %d\n", getCardCount());
     }
 
+    /**
+     * Sets the top card of the Deck.
+     * @param c The card to show at the top of the deck.
+     */
     public void setTopCard(Card c) {
         _currCard = c;
     }
@@ -84,6 +103,9 @@ public class Deck implements IGameObject {
 
     }
 
+    /**
+     * Shuffles the deck
+     */
     public void shuffle() {
         for(int i = 0; i < _cards.size(); i++) {
             int ri = Game.Random.nextInt(_cards.size());
@@ -94,11 +116,20 @@ public class Deck implements IGameObject {
         }
     }
 
+    /**
+     * Moves the deck around the playing field
+     * @param x The X-Coordinate or Left Offset of the Terminal Window
+     * @param y The Y-Coordinate or Top Offset of the Terminal Window
+     */
     public void move(int x, int y) {
         _x = x;
         _y = y;
     }
 
+    /**
+     * Gets the total count within the Deck.
+     * @return An integer representation of the grand total of cards in the Deck.
+     */
     public int getCardCount() {
         return _cards.size();
     }

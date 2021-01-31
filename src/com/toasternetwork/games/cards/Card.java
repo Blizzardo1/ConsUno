@@ -12,19 +12,35 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * A Basic Card
+ */
 public class Card implements IGameObject {
     private CardColor _color;
     private CardType _type;
 
+    /**
+     * A new Card
+     * @param type The value of the card, from 0 to Wild Draw4
+     * @param color The color representing the face of the card.
+     */
     public Card(CardType type, CardColor color) {
         _color = color;
         _type = type;
     }
 
+    /**
+     * Gets the given color
+     * @return A String representing the current color of the card's face.
+     */
     public String getColor() {
         return _color.getCardColor();
     }
 
+    /**
+     * Sets the color of the face of the card
+     * @param color The given colors: RED, BLUE, GREEN, YELLOW, or BLACK.
+     */
     public void setColor(String color) {
         _color = CardColor.valueOf(color);
     }

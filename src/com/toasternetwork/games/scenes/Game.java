@@ -90,6 +90,10 @@ public class Game implements IScene {
         return "Game";
     }
 
+    /**
+     * Gets the scene's Terminal.
+     * @return A Terminal to the Scene
+     */
     public static Terminal getTerminal() {
         return _terminal;
     }

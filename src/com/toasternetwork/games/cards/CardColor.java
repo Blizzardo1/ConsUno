@@ -4,6 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Base color of a standard card
+ */
 public enum CardColor {
     Red(0,"Red"),
     Green(1,"Green"),
@@ -27,10 +30,19 @@ public enum CardColor {
         _index = index;
     }
 
+    /**
+     * Gets the card color at the specified index
+     * @param index The index to retrieve the given CardColor
+     * @return The CardColor at the index
+     */
     public static CardColor get(int index) {
         return lookup.get(index);
     }
 
+    /**
+     * Gets the ANSI color code of the given CardColor
+     * @return The represented ANSI color code.
+     */
     public int getColorCode() {
         switch (this) {
             case Gray: return 8;
@@ -43,14 +55,26 @@ public enum CardColor {
         return -1;
     }
 
+    /**
+     * Gets the card Color in the form of a String
+     * @return A String representing the card's color
+     */
     public String getCardColor() {
         return _color;
     }
 
+    /**
+     * Gets the index of the CardColor
+     * @return The specified index of the CardColor
+     */
     public int getIndex() {
         return _index;
     }
 
+    /**
+     * Sets the new color of the card. (Ability to manipulate the card)
+     * @param color The new CardColor
+     */
     public void setCardColor(CardColor color) {
         _color = color._color;
     }

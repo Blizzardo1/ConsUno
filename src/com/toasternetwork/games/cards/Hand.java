@@ -8,6 +8,10 @@ import java.util.ArrayList;
 public class Hand implements IGameObject {
     private ArrayList<Card> _hand;
 
+    /**
+     * Adds a card to the player's hand
+     * @param card A card to add to the hand
+     */
     public void giveCard(Card card) {
         _hand.add(card);
     }

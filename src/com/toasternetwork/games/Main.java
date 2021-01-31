@@ -1,12 +1,13 @@
 package com.toasternetwork.games;
 
-import com.toasternetwork.games.graphics.Ansi;
-
 import java.io.IOException;
-import java.util.Date;
 
 public class Main {
 
+    /**
+     * The Entry-Point of the Game
+     * @param args Dummy Value (Unused)
+     */
     public static void main(String[] args) {
         Game _game = new Game();
         _game.init();
