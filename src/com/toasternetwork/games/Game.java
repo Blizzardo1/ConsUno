@@ -23,14 +23,18 @@ public class Game implements IGameObject {
         Random = new Random();
     }
 
+    public void Die() {
+        _isAlive = false;
+    }
+
     @Override
     public void init() {
 
         _isAlive = true;
         _scenes = new HashMap<>();
-        Title t = new Title();
-        Options o = new Options();
-        com.toasternetwork.games.scenes.Game g = new com.toasternetwork.games.scenes.Game();
+        Title t = new Title(this);
+        Options o = new Options(this);
+        com.toasternetwork.games.scenes.Game g = new com.toasternetwork.games.scenes.Game(this);
         t.init();
         o.init();
         g.init();

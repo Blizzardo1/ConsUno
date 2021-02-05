@@ -18,14 +18,17 @@ public class Deck implements IGameObject {
     private int _x;
     private int _y;
 
+    private final com.toasternetwork.games.scenes.Game _game;
+
     private Card _currCard;
 
     /**
      * A New Deck of Cards
      */
-    public Deck() {
+    public Deck(com.toasternetwork.games.scenes.Game game) {
         _cards = new ArrayList<>();
         _currCard = new Card(CardType.Face, CardColor.Red);
+        _game = game;
     }
 
     /**
@@ -47,6 +50,10 @@ public class Deck implements IGameObject {
      */
     public void addCard(Card c) {
         _cards.add(c);
+    }
+
+    public Card getTopCard() {
+        return _currCard;
     }
 
     @Override

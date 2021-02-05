@@ -15,7 +15,16 @@ public class Game implements IScene {
     private static Terminal _terminal;
     private Deck _deck;
     private Deck _discard;
+    private final com.toasternetwork.games.Game _game;
+
     protected Hand[] Players;
+
+    public Game(com.toasternetwork.games.Game game) {
+        _game = game;
+    }
+
+    public Deck getDiscardPile(){ return _discard; }
+    public Deck getDrawPile() { return _deck; }
 
     @Override
     public void init() {
@@ -27,13 +36,13 @@ public class Game implements IScene {
             e.printStackTrace();
         }
 
-        _deck = new Deck();
-        _discard = new Deck();
+        _deck = new Deck(this);
+        _discard = new Deck(this);
         Players = new Hand[10];
         _deck.init();
         _deck.shuffle();
         for (int i = 0; i < Players.length; i++) {
-            Players[i] = new Hand();
+            Players[i] = new Hand(this, i);
             Players[i].init();
             for(int j = 0; j < 8; j++) {
                 Card c = _deck.drawCard();
@@ -47,10 +56,10 @@ public class Game implements IScene {
 
     @Override
     public void draw(long deltaTime) throws IOException {
-
+        _terminal.clearScreen();
         _terminal.setCursorPosition(0, 0);
         _terminal.setBackgroundColor(TextColor.ANSI.WHITE_BRIGHT);
-        _terminal.flush();
+        //_terminal.flush();
 
         int deckPosY = _terminal.getTerminalSize().getRows() - 2;
         _discard.move(7, deckPosY);
@@ -66,10 +75,14 @@ public class Game implements IScene {
             player.draw(deltaTime);
             _terminal.setCursorPosition(1, pc);
         }
+        _terminal.flush();
     }
 
     @Override
     public void update(long deltaTime) {
+        if(_terminal == null) {
+            _game.Die();
+        }
         if(_deck.getCardCount() == 0) {
             // Grab discard and reshuffle
             Card dc;
@@ -81,7 +94,22 @@ public class Game implements IScene {
 
         _deck.update(deltaTime);
         for(Hand player : Players) {
+            if(player.IsWinner()) {
+                try {
+                    Game.getTerminal().putString(String.format("%s is the winner!", player.getId()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                _game.Die();
+            }
+            player.playCard();
             player.update(deltaTime);
+            try {
+                Thread.sleep(deltaTime+1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
+            }
         }
     }
 
