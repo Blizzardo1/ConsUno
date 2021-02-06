@@ -1,5 +1,7 @@
 package com.toasternetwork.games;
 
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.Terminal;
 import com.toasternetwork.games.scenes.IScene;
 import com.toasternetwork.games.scenes.Options;
 import com.toasternetwork.games.scenes.Title;
@@ -15,6 +17,12 @@ public class Game implements IGameObject {
     private IScene _currentScene;
     private HashMap<String, IScene> _scenes;
 
+    private Terminal _terminal;
+
+    public Terminal getTerminal() {
+        return _terminal;
+    }
+
     private boolean _isAlive;
 
     public static Random Random;
@@ -29,9 +37,16 @@ public class Game implements IGameObject {
 
     @Override
     public void init() {
-
         _isAlive = true;
         _scenes = new HashMap<>();
+        DefaultTerminalFactory dtf = new DefaultTerminalFactory();
+        try {
+            _terminal = dtf.createTerminal();
+            _terminal.setCursorVisible(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Title t = new Title(this);
         Options o = new Options(this);
         com.toasternetwork.games.scenes.Game g = new com.toasternetwork.games.scenes.Game(this);
@@ -68,11 +83,25 @@ public class Game implements IGameObject {
         _currentScene.update(deltaTime);
     }
 
+    @Override
+    public int getX() {
+        return 0;
+    }
+
+    @Override
+    public int getY() {
+        return 0;
+    }
+
     /**
      * Sets the scene of the current Game.
      * @param scene A Scene to transition to
      */
     public void setScene(String scene) {
         _currentScene = _scenes.get(scene);
+    }
+
+    public void move(int x, int y) {
+
     }
 }

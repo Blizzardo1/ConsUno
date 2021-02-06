@@ -18,17 +18,17 @@ public class Deck implements IGameObject {
     private int _x;
     private int _y;
 
-    private final com.toasternetwork.games.scenes.Game _game;
+    private final com.toasternetwork.games.Game _game;
 
     private Card _currCard;
 
     /**
      * A New Deck of Cards
      */
-    public Deck(com.toasternetwork.games.scenes.Game game) {
+    public Deck(com.toasternetwork.games.Game game) {
         _cards = new ArrayList<>();
-        _currCard = new Card(CardType.Face, CardColor.Red);
         _game = game;
+        _currCard = new Card(CardType.Face, CardColor.Red, _game);
     }
 
     /**
@@ -61,19 +61,19 @@ public class Deck implements IGameObject {
         for (int y = 0; y < 4; y++) {
             CardColor color = CardColor.get(y);
             for(int x = 0; x < 10; x++) {
-                _cards.add(new Card(CardType.get(x), color));
-                _cards.add(new Card(CardType.get(x), color));
+                _cards.add(new Card(CardType.get(x), color, _game));
+                _cards.add(new Card(CardType.get(x), color, _game));
             }
-            _cards.add(new Card(CardType.Skip, color));
-            _cards.add(new Card(CardType.Reverse, color));
-            _cards.add(new Card(CardType.DrawTwo, color));
-            _cards.add(new Card(CardType.Skip, color));
-            _cards.add(new Card(CardType.Reverse, color));
-            _cards.add(new Card(CardType.DrawTwo, color));
+            _cards.add(new Card(CardType.Skip, color, _game));
+            _cards.add(new Card(CardType.Reverse, color, _game));
+            _cards.add(new Card(CardType.DrawTwo, color, _game));
+            _cards.add(new Card(CardType.Skip, color, _game));
+            _cards.add(new Card(CardType.Reverse, color, _game));
+            _cards.add(new Card(CardType.DrawTwo, color, _game));
         }
         for(int i = 0; i < 2; i++) {
-            _cards.add(new Card(CardType.Wild, CardColor.Black));
-            _cards.add(new Card(CardType.DrawFour, CardColor.Black));
+            _cards.add(new Card(CardType.Wild, CardColor.Black, _game));
+            _cards.add(new Card(CardType.DrawFour, CardColor.Black, _game));
         }
 
         // DEBUG: Show the card count
@@ -90,7 +90,7 @@ public class Deck implements IGameObject {
 
     @Override
     public void draw(long deltaTime) throws IOException {
-        Terminal t = com.toasternetwork.games.scenes.Game.getTerminal();
+        Terminal t = _game.getTerminal();
 
         t.setCursorPosition(_x, _y);
 
@@ -101,13 +101,23 @@ public class Deck implements IGameObject {
         }
 
         t.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
-        t.setBackgroundColor(TextColor.ANSI.valueOf(_currCard.getColor().toUpperCase(Locale.ROOT)));
+        t.setBackgroundColor(TextColor.ANSI.valueOf(String.format("%s_BRIGHT", _currCard.getColor().toUpperCase(Locale.ROOT))));
         t.putString(_currCard.getValue());
     }
 
     @Override
     public void update(long deltaTime) {
 
+    }
+
+    @Override
+    public int getX() {
+        return _x;
+    }
+
+    @Override
+    public int getY() {
+        return _y;
     }
 
     /**
@@ -128,6 +138,7 @@ public class Deck implements IGameObject {
      * @param x The X-Coordinate or Left Offset of the Terminal Window
      * @param y The Y-Coordinate or Top Offset of the Terminal Window
      */
+    @Override
     public void move(int x, int y) {
         _x = x;
         _y = y;

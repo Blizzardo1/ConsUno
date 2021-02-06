@@ -20,4 +20,10 @@ public interface IGameObject {
      * @param deltaTime The difference in time between draws and updates
      */
     void update(long deltaTime);
+
+    int getX();
+
+    int getY();
+
+    void move(int x, int y);
 }

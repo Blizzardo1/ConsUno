@@ -2,9 +2,9 @@ package com.toasternetwork.games.cards;
 
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.toasternetwork.games.Game;
 import com.toasternetwork.games.IGameObject;
 import com.toasternetwork.games.graphics.Ansi;
-import com.toasternetwork.games.scenes.Game;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,15 +18,17 @@ import java.util.stream.Stream;
 public class Card implements IGameObject {
     private CardColor _color;
     private CardType _type;
+    private Game _game;
 
     /**
      * A new Card
      * @param type The value of the card, from 0 to Wild Draw4
      * @param color The color representing the face of the card.
      */
-    public Card(CardType type, CardColor color) {
+    public Card(CardType type, CardColor color, Game game) {
         _color = color;
         _type = type;
+        _game = game;
     }
 
     /**
@@ -83,7 +85,7 @@ public class Card implements IGameObject {
 
     @Override
     public void draw(long deltaTime) throws IOException {
-        Terminal t = Game.getTerminal();
+        Terminal t = _game.getTerminal();
         TextColor bg = TextColor.ANSI.valueOf(String.format("%s%s", _color.getCardColor().toUpperCase(Locale.ROOT), "_BRIGHT"));
         t.setBackgroundColor(bg);
         if(bg == TextColor.ANSI.YELLOW_BRIGHT) {
@@ -97,6 +99,21 @@ public class Card implements IGameObject {
 
     @Override
     public void update(long deltaTime) {
+
+    }
+
+    @Override
+    public int getX() {
+        return 0;
+    }
+
+    @Override
+    public int getY() {
+        return 0;
+    }
+
+    @Override
+    public void move(int x, int y) {
 
     }
 }

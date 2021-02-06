@@ -25,6 +25,21 @@ public class Options implements IScene {
     }
 
     @Override
+    public int getX() {
+        return 0;
+    }
+
+    @Override
+    public int getY() {
+        return 0;
+    }
+
+    @Override
+    public void move(int x, int y) {
+
+    }
+
+    @Override
     public String getSceneName() {
         return "Options";
     }

@@ -9,6 +9,8 @@ import java.util.Arrays;
 
 public class Hand implements IGameObject {
     private ArrayList<Card> _hand;
+    private int _x;
+    private int _y;
 
     private final Game _game;
     private boolean _isWinner;
@@ -19,7 +21,9 @@ public class Hand implements IGameObject {
         _playerId = playerId;
     }
 
-    public boolean IsWinner() {return _isWinner; }
+    public boolean IsWinner() {
+        return _isWinner;
+    }
 
     /**
      * Adds a card to the player's hand
@@ -34,6 +38,8 @@ public class Hand implements IGameObject {
 
         if(_hand.stream().noneMatch(discardReference::isMatch)) {
             giveCard(_game.getDrawPile().drawCard());
+            playCard();
+            return;
         }
         if(_hand.toArray().length == 0) {
             _isWinner = true;
@@ -41,13 +47,19 @@ public class Hand implements IGameObject {
         }
         for(int i = 0; i < _hand.size(); i++) {
             Card card = _hand.get(i);
+            if(_hand.size() == 0) {
+                _isWinner = true;
+            }
             try {
             if(card.isMatch(discardReference)) {
                 _hand.remove(card);
+                if(_hand.size() == 1) {
+                    _game.getTerminal().putString("UNO!");
+                }
                 _game.getDiscardPile().addCard(card);
                 _game.getDiscardPile().setTopCard(card);
             }
-            } catch (NullPointerException npe) {
+            } catch (NullPointerException | IOException npe) {
                 npe.printStackTrace();
             }
         }
@@ -61,7 +73,7 @@ public class Hand implements IGameObject {
     @Override
     public void draw(long deltaTime) throws IOException {
         if(_hand == null) return;
-
+        _game.getTerminal().setCursorPosition(_x, _y);
         for (Card c : _hand) {
             c.draw(deltaTime);
         }
@@ -69,10 +81,27 @@ public class Hand implements IGameObject {
 
     @Override
     public void update(long deltaTime) {
+        // _hand.trimToSize();
+        System.out.printf("Cards for Player %d, %d.\n", _playerId, _hand.size());
+    }
 
+    @Override
+    public int getX() {
+        return _x;
+    }
+
+    @Override
+    public int getY() {
+        return _y;
     }
 
     public int getId() {
         return _playerId;
+    }
+
+    @Override
+    public void move(int x, int y) {
+        _x = x;
+        _y = y;
     }
 }
