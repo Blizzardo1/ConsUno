@@ -4,13 +4,13 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.toasternetwork.games.Game;
 import com.toasternetwork.games.IGameObject;
-import com.toasternetwork.games.graphics.Ansi;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * A Basic Card
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 public class Card implements IGameObject {
     private CardColor _color;
     private CardType _type;
-    private Game _game;
+    private final Game _game;
 
     /**
      * A new Card
@@ -74,13 +74,17 @@ public class Card implements IGameObject {
     public boolean isMatch(Card card) {
         return card.getColor().equals(this.getColor())
                 || card.getValue().equals(this.getValue())
-                || card._type.equals(CardType.Wild)
-                || card._type.equals(CardType.DrawFour);
+                || card._type == CardType.DrawFour
+                || card._type == CardType.Wild
+                || this._type == CardType.DrawFour
+                || this._type == CardType.Wild;
     }
 
     @Override
     public void init() {
-        // Do nothing... yet
+        // This will break the game because of the constructor
+        setColor(CardColor.Black.getCardColor());
+        setValue(0);
     }
 
     @Override
@@ -115,5 +119,9 @@ public class Card implements IGameObject {
     @Override
     public void move(int x, int y) {
 
+    }
+
+    public CardType getType() {
+        return _type;
     }
 }

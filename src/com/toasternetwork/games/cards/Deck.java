@@ -5,10 +5,8 @@ import com.googlecode.lanterna.terminal.Terminal;
 import com.toasternetwork.games.Game;
 import com.toasternetwork.games.IGameObject;
 
-import javax.xml.soap.Text;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * An implementation of a Deck of Cards or a Discard Pile
@@ -21,6 +19,9 @@ public class Deck implements IGameObject {
     private final com.toasternetwork.games.Game _game;
 
     private Card _currCard;
+    private boolean _isEmpty;
+    private boolean _expected;
+    private CardColor _expectedColor;
 
     /**
      * A New Deck of Cards
@@ -32,16 +33,28 @@ public class Deck implements IGameObject {
     }
 
     /**
+     * Gets information whether or not the deck is empty
+     * @return True if the deck is empty, else false.
+     */
+    public boolean getIsDeckEmpty() {
+        return _isEmpty;
+    }
+
+    /**
      * Draws a card from the deck.
      * @return A Card
      */
     public Card drawCard() {
-        if(getCardCount() == 0){
-            return null;
+        if(getCardCount() == 1){
+            _isEmpty = true;
         }
         Card c = _cards.get(0);
         _cards.remove(c);
         return c;
+    }
+
+    public CardColor getExpectedCardColor() {
+        return _expectedColor;
     }
 
     /**
@@ -100,14 +113,12 @@ public class Deck implements IGameObject {
             return;
         }
 
-        t.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
-        t.setBackgroundColor(TextColor.ANSI.valueOf(String.format("%s_BRIGHT", _currCard.getColor().toUpperCase(Locale.ROOT))));
-        t.putString(_currCard.getValue());
+        _currCard.draw(deltaTime);
     }
 
     @Override
     public void update(long deltaTime) {
-
+        _isEmpty = _cards.size() == 0;
     }
 
     @Override
@@ -150,5 +161,23 @@ public class Deck implements IGameObject {
      */
     public int getCardCount() {
         return _cards.size();
+    }
+
+    /**
+     * Expects the next card to be a certain color
+     * @param color The color to expect
+     */
+    // IGNORE: Terrible hack implemented due to time constraints
+    public void expectNextCardToBe(CardColor color) {
+        _expected = true;
+        _expectedColor = color;
+    }
+
+    public boolean getNewColorIsExpected() {
+        return _expected;
+    }
+
+    public void satisfyExpectedColor() {
+        _expected = false;
     }
 }

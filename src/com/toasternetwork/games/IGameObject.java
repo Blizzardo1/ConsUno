@@ -19,7 +19,7 @@ public interface IGameObject {
      * Updates the logic of the Game Object
      * @param deltaTime The difference in time between draws and updates
      */
-    void update(long deltaTime);
+    void update(long deltaTime) throws IOException;
 
     int getX();
 

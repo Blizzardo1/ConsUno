@@ -1,11 +1,12 @@
 package com.toasternetwork.games.cards;
 
+import com.googlecode.lanterna.terminal.Terminal;
 import com.toasternetwork.games.IGameObject;
 import com.toasternetwork.games.scenes.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Objects;
 
 public class Hand implements IGameObject {
     private ArrayList<Card> _hand;
@@ -15,6 +16,7 @@ public class Hand implements IGameObject {
     private final Game _game;
     private boolean _isWinner;
     private final int _playerId;
+    private Terminal _terminal;
 
     public Hand(Game game, int playerId) {
         _game = game;
@@ -34,55 +36,77 @@ public class Hand implements IGameObject {
     }
 
     public void playCard() {
-        Card discardReference = _game.getDiscardPile().getTopCard();
+        Deck discardPile = _game.getDiscardPile();
+        Card discardReference = discardPile.getTopCard();
 
-        if(_hand.stream().noneMatch(discardReference::isMatch)) {
+        if (_hand.stream().noneMatch(discardReference::isMatch)) {
             giveCard(_game.getDrawPile().drawCard());
-            playCard();
-            return;
         }
-        if(_hand.toArray().length == 0) {
+        if (_hand.size() < 1) {
             _isWinner = true;
-            return;
         }
-        for(int i = 0; i < _hand.size(); i++) {
-            Card card = _hand.get(i);
-            if(_hand.size() == 0) {
-                _isWinner = true;
-            }
+        _hand.stream().reduce((card, card2) -> discardReference.isMatch(card) ? card : card2).ifPresent((card) -> {
             try {
-            if(card.isMatch(discardReference)) {
-                _hand.remove(card);
-                if(_hand.size() == 1) {
-                    _game.getTerminal().putString("UNO!");
+                if (discardPile.getNewColorIsExpected() && !card.getColor().equals(discardPile.getExpectedCardColor().getCardColor())) {
+                    return;
                 }
-                _game.getDiscardPile().addCard(card);
-                _game.getDiscardPile().setTopCard(card);
-            }
+                if (discardReference.isMatch(card)) {
+                    switch (card.getType()) {
+                        case Wild:
+                            _game.triggerWild();
+                            break;
+                        case Skip:
+                            _game.skipNextPlayer();
+                            break;
+                        case DrawFour:
+                            _game.nextPlayerDrawsFour();
+                            break;
+                        case DrawTwo:
+                            _game.nextPlayerDrawsTwo();
+                            break;
+                        case Reverse:
+                            _game.reverse();
+                            break;
+                        default:
+                            break;
+                    }
+                    _hand.remove(card);
+                    _hand.trimToSize();
+                    if (_hand.size() == 1) {
+                        _terminal.setCursorPosition(_x + 20, _y);
+                        _terminal.putString("UNO!");
+                    }
+                    _game.getDiscardPile().addCard(card);
+                    _game.getDiscardPile().setTopCard(card);
+                    if(discardPile.getNewColorIsExpected()) {
+                        discardPile.satisfyExpectedColor();
+                    }
+                }
             } catch (NullPointerException | IOException npe) {
                 npe.printStackTrace();
             }
-        }
+        });
     }
 
     @Override
     public void init() {
         _hand = new ArrayList<>();
+        _terminal = _game.getTerminal();
     }
 
     @Override
     public void draw(long deltaTime) throws IOException {
         if(_hand == null) return;
-        _game.getTerminal().setCursorPosition(_x, _y);
+        _terminal.setCursorPosition(_x, _y);
         for (Card c : _hand) {
+            if (c == null) continue;
             c.draw(deltaTime);
         }
     }
 
     @Override
     public void update(long deltaTime) {
-        // _hand.trimToSize();
-        System.out.printf("Cards for Player %d, %d.\n", _playerId, _hand.size());
+        _hand.trimToSize();
     }
 
     @Override
@@ -103,5 +127,9 @@ public class Hand implements IGameObject {
     public void move(int x, int y) {
         _x = x;
         _y = y;
+    }
+
+    public int getCardCount() {
+        return _hand.size();
     }
 }

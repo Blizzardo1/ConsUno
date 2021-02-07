@@ -1,5 +1,6 @@
 package com.toasternetwork.games;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.toasternetwork.games.scenes.IScene;
@@ -18,6 +19,8 @@ public class Game implements IGameObject {
     private HashMap<String, IScene> _scenes;
 
     private Terminal _terminal;
+    private boolean _debugMode;
+    private boolean _developerMode;
 
     public Terminal getTerminal() {
         return _terminal;
@@ -31,15 +34,25 @@ public class Game implements IGameObject {
         Random = new Random();
     }
 
-    public void Die() {
+    public boolean IsDebugModeSet() {
+        return _debugMode;
+    }
+
+    public boolean IsDeveloperModeSet() {
+        return _developerMode;
+    }
+
+    public void Die() throws IOException {
         _isAlive = false;
+        _terminal.close();
     }
 
     @Override
     public void init() {
+        _debugMode = true; // Test with this to ensure Diagnostics are alive at start
         _isAlive = true;
         _scenes = new HashMap<>();
-        DefaultTerminalFactory dtf = new DefaultTerminalFactory();
+        DefaultTerminalFactory dtf = new DefaultTerminalFactory().setInitialTerminalSize(new TerminalSize(120,40));
         try {
             _terminal = dtf.createTerminal();
             _terminal.setCursorVisible(false);
@@ -60,10 +73,6 @@ public class Game implements IGameObject {
         setScene(g.getSceneName());         // Such a ridiculous hack, but it should work
     }
 
-    protected static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-    }
-
     /**
      * A Boolean to check if the game is still alive.
      * @return Whether or not the game is alive.
@@ -74,12 +83,11 @@ public class Game implements IGameObject {
 
     @Override
     public void draw(long deltaTime) throws IOException {
-        clearScreen();
         _currentScene.draw(deltaTime);
     }
 
     @Override
-    public void update(long deltaTime) {
+    public void update(long deltaTime) throws IOException {
         _currentScene.update(deltaTime);
     }
 
@@ -103,5 +111,16 @@ public class Game implements IGameObject {
 
     public void move(int x, int y) {
 
+    }
+
+    public void toggleView(ViewType vt) {
+        switch (vt) {
+            case Debug:
+                _debugMode = !_debugMode;
+                break;
+            case Developer:
+                _developerMode = !_developerMode;
+                break;
+        }
     }
 }

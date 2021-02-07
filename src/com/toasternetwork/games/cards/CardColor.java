@@ -1,5 +1,7 @@
 package com.toasternetwork.games.cards;
 
+import com.toasternetwork.games.Game;
+
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +39,10 @@ public enum CardColor {
      */
     public static CardColor get(int index) {
         return lookup.get(index);
+    }
+
+    public static CardColor getRandom() {
+        return get(Game.Random.nextInt(4));
     }
 
     /**
