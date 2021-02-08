@@ -46,22 +46,6 @@ public enum CardColor {
     }
 
     /**
-     * Gets the ANSI color code of the given CardColor
-     * @return The represented ANSI color code.
-     */
-    public int getColorCode() {
-        switch (this) {
-            case Gray: return 8;
-            case Red: return 9;
-            case Green: return 10;
-            case Yellow: return 11;
-            case Blue: return 12;
-            case Black: return 0;
-        }
-        return -1;
-    }
-
-    /**
      * Gets the card Color in the form of a String
      * @return A String representing the card's color
      */

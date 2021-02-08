@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * An implementation of a Deck of Cards or a Discard Pile
+ * An implementation of a Deck of Cards
  */
 public class Deck implements IGameObject {
     private final ArrayList<Card> _cards;
@@ -62,6 +62,7 @@ public class Deck implements IGameObject {
      * @param c The card to add to the Deck.
      */
     public void addCard(Card c) {
+        c.move(_x, _y);
         _cards.add(c);
     }
 
@@ -88,6 +89,8 @@ public class Deck implements IGameObject {
             _cards.add(new Card(CardType.Wild, CardColor.Black, _game));
             _cards.add(new Card(CardType.DrawFour, CardColor.Black, _game));
         }
+
+        organizeCards();
 
         // DEBUG: Show the card count
         // System.out.printf("Card Count: %d\n", getCardCount());
@@ -118,6 +121,7 @@ public class Deck implements IGameObject {
 
     @Override
     public void update(long deltaTime) {
+        organizeCards();
         _isEmpty = _cards.size() == 0;
     }
 
@@ -179,5 +183,17 @@ public class Deck implements IGameObject {
 
     public void satisfyExpectedColor() {
         _expected = false;
+    }
+
+    private void organizeCards() {
+        _currCard.move(_x, _y);
+        if(_currCard.getType().getCardName().equals(CardType.Face.getCardName())) {
+            return;
+        }
+        for (int i = 0, cardsSize = _cards.size(); i < cardsSize; i++) {
+            Card c = _cards.get(i);
+            c.move(_x, _y);
+            _cards.set(i, c);
+        }
     }
 }

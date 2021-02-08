@@ -4,9 +4,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.toasternetwork.games.Game;
 import com.toasternetwork.games.IGameObject;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
@@ -16,9 +14,21 @@ import java.util.Optional;
  * A Basic Card
  */
 public class Card implements IGameObject {
+    private static final int _cardWidth = 5;
+    private static final int _cardHeight = 3;
+
     private CardColor _color;
     private CardType _type;
     private final Game _game;
+    private int _x;
+    private int _y;
+
+    public static int getWidth() {
+        return _cardWidth;
+    }
+    public static int getHeight() {
+        return _cardHeight;
+    }
 
     /**
      * A new Card
@@ -82,9 +92,7 @@ public class Card implements IGameObject {
 
     @Override
     public void init() {
-        // This will break the game because of the constructor
-        setColor(CardColor.Black.getCardColor());
-        setValue(0);
+
     }
 
     @Override
@@ -97,7 +105,13 @@ public class Card implements IGameObject {
         } else {
             t.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
         }
-        t.putString(_type.getCardName());
+
+        t.setCursorPosition(_x, _y-1);
+        t.putString("|   |");
+        t.setCursorPosition(_x, _y);
+        t.putString(String.format("|%2s |", _type.getCardName()));
+        t.setCursorPosition(_x, _y+1);
+        t.putString("|   |");
         t.resetColorAndSGR();
     }
 
@@ -108,17 +122,18 @@ public class Card implements IGameObject {
 
     @Override
     public int getX() {
-        return 0;
+        return _x;
     }
 
     @Override
     public int getY() {
-        return 0;
+        return _y;
     }
 
     @Override
     public void move(int x, int y) {
-
+        _x = x;
+        _y = y;
     }
 
     public CardType getType() {

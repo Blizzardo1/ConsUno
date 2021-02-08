@@ -3,127 +3,177 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="110.3144444444444" y="1335.0">com.toasternetwork.games.scenes.Game</node>
-    <node x="42.41861111111109" y="0.0">com.toasternetwork.games.cards.CardType</node>
-    <node x="530.4186111111111" y="221.0">com.toasternetwork.games.scenes.Options</node>
-    <node x="0.0" y="1023.0">com.toasternetwork.games.cards.Hand</node>
-    <node x="694.4186111111111" y="221.0">com.toasternetwork.games.scenes.Title</node>
-    <node x="549.1674603174603" y="623.5">com.toasternetwork.games.Game</node>
-    <node x="218.66746031746027" y="934.0">com.toasternetwork.games.cards.Deck</node>
-    <node x="284.4186111111111" y="110.0">com.toasternetwork.games.cards.CardColor</node>
-    <node x="84.54246031746032" y="623.0">com.toasternetwork.games.cards.Card</node>
+    <node x="395.8394114219112" y="1667.0">com.toasternetwork.games.scenes.Game</node>
+    <node x="577.8116336441335" y="0.0">com.toasternetwork.games.cards.CardType</node>
+    <node x="35.0726653901653" y="1898.0">com.toasternetwork.games.scenes.Options</node>
+    <node x="203.07266539016533" y="1898.0">com.toasternetwork.games.scenes.Title</node>
+    <node x="143.1976653901653" y="2462.0">com.toasternetwork.games.Game</node>
+    <node x="488.38493395493384" y="1178.0">com.toasternetwork.games.cards.Hand</node>
+    <node x="388.2222222222222" y="623.0">com.toasternetwork.games.cards.Deck</node>
+    <node x="94.55160062160047" y="110.0">com.toasternetwork.games.cards.CardColor</node>
+    <node x="491.6236152736151" y="2960.0">com.toasternetwork.games.cards.Card</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="com.toasternetwork.games.cards.Deck" target="com.toasternetwork.games.cards.CardColor">
-      <point x="49.14285714285717" y="-160.5" />
-      <point x="353.81031746031744" y="904.0" />
-      <point x="463.4503174603174" y="904.0" />
-      <point x="463.4503174603174" y="603.0" />
-      <point x="472.75194444444435" y="603.0" />
-      <point x="75.33333333333326" y="171.5" />
+    <edge source="com.toasternetwork.games.cards.Hand" target="com.toasternetwork.games.cards.Deck">
+      <point x="-45.0" y="-204.5" />
+      <point x="533.3849339549338" y="1158.0" />
+      <point x="524.6222222222221" y="1158.0" />
+      <point x="12.400000000000034" y="237.5" />
+    </edge>
+    <edge source="com.toasternetwork.games.scenes.Game" target="com.toasternetwork.games.Game">
+      <point x="0.0" y="347.5" />
+      <point x="492.8394114219112" y="2432.0" />
+      <point x="350.1976653901653" y="2432.0" />
+      <point x="92.0" y="-204.0" />
     </edge>
     <edge source="com.toasternetwork.games.cards.Deck" target="com.toasternetwork.games.cards.Card">
-      <point x="-73.71428571428572" y="-160.5" />
-      <point x="230.95317460317455" y="894.0" />
-      <point x="194.22996031746032" y="894.0" />
-      <point x="12.1875" y="105.5" />
+      <point x="86.80000000000007" y="237.5" />
+      <point x="599.0222222222222" y="1128.0" />
+      <point x="700.8849339549338" y="1128.0" />
+      <point x="700.8849339549338" y="2910.0" />
+      <point x="661.1620768120766" y="2910.0" />
+      <point x="53.53846153846155" y="-193.5" />
     </edge>
-    <edge source="com.toasternetwork.games.cards.Deck" target="com.toasternetwork.games.scenes.Game">
-      <point x="57.333333333333314" y="160.5" />
-      <point x="362.0007936507936" y="1295.0" />
-      <point x="237.0644444444444" y="1295.0" />
-      <point x="42.25" y="-116.0" />
+    <edge source="com.toasternetwork.games.scenes.Options" target="com.toasternetwork.games.Game">
+      <point x="18.375" y="116.5" />
+      <point x="126.9476653901653" y="2412.0" />
+      <point x="196.86433205683193" y="2412.0" />
+      <point x="-61.33333333333337" y="-204.0" />
     </edge>
-    <edge source="com.toasternetwork.games.Game" target="com.toasternetwork.games.scenes.Options">
-      <point x="-86.25" y="-105.0" />
-      <point x="577.9174603174603" y="603.0" />
-      <point x="566.4186111111111" y="603.0" />
-      <point x="-36.0" y="60.5" />
+    <edge source="com.toasternetwork.games.cards.Deck" target="com.toasternetwork.games.cards.CardColor">
+      <point x="-82.66666666666669" y="-237.5" />
+      <point x="429.55555555555543" y="593.0" />
+      <point x="264.05160062160047" y="593.0" />
+      <point x="56.5" y="171.5" />
+    </edge>
+    <edge source="com.toasternetwork.games.cards.Hand" target="com.toasternetwork.games.cards.CardType">
+      <point x="45.0" y="-204.5" />
+      <point x="623.3849339549338" y="1158.0" />
+      <point x="646.7222222222222" y="1158.0" />
+      <point x="646.7222222222222" y="603.0" />
+      <point x="661.0616336441335" y="603.0" />
+      <point x="-27.75" y="281.5" />
+    </edge>
+    <edge source="com.toasternetwork.games.cards.Card" target="com.toasternetwork.games.Game">
+      <point x="-71.38461538461539" y="-193.5" />
+      <point x="536.2389998889997" y="2920.0" />
+      <point x="200.6976653901653" y="2920.0" />
+      <point x="-57.5" y="204.0" />
     </edge>
     <edge source="com.toasternetwork.games.Game" target="com.toasternetwork.games.scenes.Game">
-      <point x="76.66666666666669" y="105.0" />
-      <point x="740.8341269841269" y="914.0" />
-      <point x="675.1674603174603" y="914.0" />
-      <point x="675.1674603174603" y="1315.0" />
-      <point x="270.8644444444444" y="1315.0" />
-      <point x="76.05000000000001" y="-116.0" />
+      <point x="61.333333333333314" y="-204.0" />
+      <point x="319.5309987234986" y="2412.0" />
+      <point x="415.23941142191126" y="2412.0" />
+      <point x="-77.6" y="347.5" />
+    </edge>
+    <edge source="com.toasternetwork.games.Game" target="com.toasternetwork.games.scenes.Options">
+      <point x="-92.00000000000003" y="-204.0" />
+      <point x="166.1976653901653" y="2432.0" />
+      <point x="53.4476653901653" y="2432.0" />
+      <point x="-55.125" y="116.5" />
     </edge>
     <edge source="com.toasternetwork.games.scenes.Game" target="com.toasternetwork.games.cards.Hand">
-      <point x="-76.05000000000007" y="-116.0" />
-      <point x="118.76444444444434" y="1315.0" />
-      <point x="28.5" y="1315.0" />
-      <point x="-57.0" y="71.5" />
+      <point x="0.0" y="-347.5" />
+      <point x="492.8394114219112" y="1647.0" />
+      <point x="501.2420768120767" y="1647.0" />
+      <point x="-77.14285714285714" y="204.5" />
     </edge>
     <edge source="com.toasternetwork.games.cards.Deck" target="com.toasternetwork.games.Game">
-      <point x="73.71428571428572" y="-160.5" />
-      <point x="378.381746031746" y="914.0" />
-      <point x="587.5007936507936" y="914.0" />
-      <point x="-76.66666666666669" y="105.0" />
+      <point x="-111.60000000000002" y="237.5" />
+      <point x="400.62222222222215" y="1118.0" />
+      <point x="192.5726653901653" y="1118.0" />
+      <point x="192.5726653901653" y="2392.0" />
+      <point x="227.53099872349867" y="2392.0" />
+      <point x="-30.66666666666663" y="-204.0" />
     </edge>
     <edge source="com.toasternetwork.games.Game" target="com.toasternetwork.games.scenes.Title">
-      <point x="28.75" y="-105.0" />
-      <point x="692.9174603174603" y="603.0" />
-      <point x="730.4186111111111" y="603.0" />
-      <point x="-36.0" y="60.5" />
+      <point x="-15.333333333333314" y="-204.0" />
+      <point x="242.86433205683198" y="2382.0" />
+      <point x="221.44766539016533" y="2382.0" />
+      <point x="-55.125" y="116.5" />
     </edge>
-    <edge source="com.toasternetwork.games.cards.Card" target="com.toasternetwork.games.scenes.Game">
-      <point x="-12.1875" y="105.5" />
-      <point x="169.85496031746032" y="904.0" />
-      <point x="192.5" y="904.0" />
-      <point x="192.5" y="1315.0" />
-      <point x="186.36444444444436" y="1315.0" />
-      <point x="-8.450000000000045" y="-116.0" />
+    <edge source="com.toasternetwork.games.scenes.Game" target="com.toasternetwork.games.cards.CardColor">
+      <point x="-86.22222222222223" y="-347.5" />
+      <point x="406.617189199689" y="1647.0" />
+      <point x="373.75123681873674" y="1647.0" />
+      <point x="373.75123681873674" y="603.0" />
+      <point x="226.38493395493384" y="603.0" />
+      <point x="18.83333333333337" y="171.5" />
     </edge>
     <edge source="com.toasternetwork.games.scenes.Game" target="com.toasternetwork.games.cards.Deck">
-      <point x="8.449999999999989" y="-116.0" />
-      <point x="203.2644444444444" y="1275.0" />
-      <point x="247.33412698412693" y="1275.0" />
-      <point x="-57.33333333333334" y="160.5" />
+      <point x="-64.66666666666669" y="-347.5" />
+      <point x="428.17274475524454" y="1647.0" />
+      <point x="419.4722222222222" y="1647.0" />
+      <point x="419.4722222222222" y="1138.0" />
+      <point x="450.2222222222222" y="1138.0" />
+      <point x="-62.0" y="237.5" />
+    </edge>
+    <edge source="com.toasternetwork.games.scenes.Title" target="com.toasternetwork.games.Game">
+      <point x="18.37499999999997" y="116.5" />
+      <point x="294.9476653901653" y="2382.0" />
+      <point x="273.53099872349867" y="2382.0" />
+      <point x="15.333333333333371" y="-204.0" />
     </edge>
     <edge source="com.toasternetwork.games.cards.Card" target="com.toasternetwork.games.cards.CardType">
-      <point x="-73.125" y="-105.5" />
-      <point x="108.91746031746032" y="603.0" />
-      <point x="79.41861111111109" y="603.0" />
-      <point x="-74.0" y="281.5" />
+      <point x="107.0769230769231" y="-193.5" />
+      <point x="714.7005383505382" y="2940.0" />
+      <point x="757.2222222222222" y="2940.0" />
+      <point x="757.2222222222222" y="603.0" />
+      <point x="772.0616336441335" y="603.0" />
+      <point x="83.25" y="281.5" />
     </edge>
     <edge source="com.toasternetwork.games.cards.Hand" target="com.toasternetwork.games.cards.Card">
-      <point x="-42.74999999999994" y="-71.5" />
-      <point x="42.75000000000006" y="914.0" />
-      <point x="96.72996031746032" y="914.0" />
-      <point x="-85.3125" y="105.5" />
+      <point x="51.428571428571416" y="204.5" />
+      <point x="629.8135053835052" y="1637.0" />
+      <point x="601.7619047619047" y="1637.0" />
+      <point x="601.7619047619047" y="2940.0" />
+      <point x="589.7774614274613" y="2940.0" />
+      <point x="-17.846153846153868" y="-193.5" />
+    </edge>
+    <edge source="com.toasternetwork.games.cards.CardColor" target="com.toasternetwork.games.Game">
+      <point x="-18.833333333333314" y="171.5" />
+      <point x="188.71826728826716" y="603.0" />
+      <point x="24.572665390165298" y="603.0" />
+      <point x="24.572665390165298" y="2442.0" />
+      <point x="150.86433205683193" y="2442.0" />
+      <point x="-107.33333333333337" y="-204.0" />
+    </edge>
+    <edge source="com.toasternetwork.games.cards.Hand" target="com.toasternetwork.games.scenes.Game">
+      <point x="-2.8421709430404007E-14" y="204.5" />
+      <point x="578.3849339549338" y="1617.0" />
+      <point x="557.506078088578" y="1617.0" />
+      <point x="64.66666666666669" y="-347.5" />
     </edge>
     <edge source="com.toasternetwork.games.cards.Card" target="com.toasternetwork.games.cards.CardColor">
-      <point x="24.375" y="-105.5" />
-      <point x="206.41746031746032" y="593.0" />
-      <point x="322.0852777777777" y="593.0" />
-      <point x="-75.33333333333337" y="171.5" />
+      <point x="-89.23076923076923" y="-193.5" />
+      <point x="518.3928460428458" y="2930.0" />
+      <point x="11.0" y="2930.0" />
+      <point x="11.0" y="593.0" />
+      <point x="151.05160062160047" y="593.0" />
+      <point x="-56.5" y="171.5" />
     </edge>
     <edge source="com.toasternetwork.games.cards.Deck" target="com.toasternetwork.games.cards.CardType">
-      <point x="24.571428571428612" y="-160.5" />
-      <point x="329.2388888888889" y="854.0" />
-      <point x="290.4844246031746" y="854.0" />
-      <point x="290.4844246031746" y="583.0" />
-      <point x="227.4186111111111" y="583.0" />
-      <point x="74.0" y="281.5" />
+      <point x="82.66666666666669" y="-237.5" />
+      <point x="594.8888888888888" y="603.0" />
+      <point x="605.5616336441335" y="603.0" />
+      <point x="-83.25" y="281.5" />
     </edge>
     <edge source="com.toasternetwork.games.scenes.Game" target="com.toasternetwork.games.cards.Card">
-      <point x="-25.350000000000023" y="-116.0" />
-      <point x="169.46444444444438" y="1305.0" />
-      <point x="181.5" y="1305.0" />
-      <point x="181.5" y="914.0" />
-      <point x="145.47996031746032" y="914.0" />
-      <point x="-36.5625" y="105.5" />
+      <point x="77.60000000000002" y="347.5" />
+      <point x="570.8512368187368" y="2940.0" />
+      <point x="571.9313075813074" y="2940.0" />
+      <point x="-35.69230769230771" y="-193.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.5999999999999998" x="1202.7823565323574" y="1071.0000000000005" />
+  <settings layout="Hierarchic Group" zoom="0.5000000000000001" x="648.047619047619" y="1963.6111111111109" />
   <SelectedNodes />
   <Categories>
     <Category>Fields</Category>
     <Category>Constructors</Category>
-    <Category>Inner Classes</Category>
     <Category>Methods</Category>
     <Category>Properties</Category>
+    <Category>Inner Classes</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

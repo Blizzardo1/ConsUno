@@ -10,12 +10,11 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.SimpleTerminalResizeListener;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.toasternetwork.games.ViewType;
-import com.toasternetwork.games.cards.Card;
-import com.toasternetwork.games.cards.CardColor;
-import com.toasternetwork.games.cards.Deck;
-import com.toasternetwork.games.cards.Hand;
+import com.toasternetwork.games.cards.*;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game implements IScene {
     private static Terminal _terminal;
@@ -28,6 +27,8 @@ public class Game implements IScene {
 
     protected Hand[] Players;
     private boolean _reverse; // Game Rule (Reverse)
+    private Timer _flagTimer;
+    private final long Limiter = 100;
 
     public Game(com.toasternetwork.games.Game game) {
         _game = game;
@@ -51,6 +52,32 @@ public class Game implements IScene {
         _currentPlayer = _currentPlayer < 0 ? TotalPlayers - 1 : _currentPlayer % TotalPlayers;
     }
 
+    /**
+     * All flags that need to be cleared will run through here
+     * @param expected Clear Specific flags
+     */
+    private void clearFlags(Expected expected) {
+        _flagTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                switch (expected) {
+                    case NewColor:
+                        _discard.satisfyExpectedColor();
+                        break;
+                    case Win:
+                        for(Hand player : Players) {
+                            player.noLongerIsWinner();
+                        }
+                        break;
+                    case Loss:
+                        // Handle losses for the rest of the AI Muppets.
+                        break;
+                }
+                
+            }
+        }, 1500);
+    }
+
     private int getXCenterPos(String message) throws IOException {
         return _terminal.getTerminalSize().getColumns() / 2 - message.length() / 2;
     }
@@ -62,6 +89,8 @@ public class Game implements IScene {
     @Override
     public void init() {
         _terminal = _game.getTerminal();
+        _flagTimer = new Timer();
+
         _deck = new Deck(_game);
         _discard = new Deck(_game);
         Players = new Hand[TotalPlayers];
@@ -71,7 +100,7 @@ public class Game implements IScene {
         for (int i = 0; i < Players.length; i++) {
             Players[i] = new Hand(this, i + 1);
             Players[i].init();
-            Players[i].move(1, i + 1);
+            Players[i].move(1, i * Card.getHeight() + 1);
             for (int j = 0; j < 8; j++) {
                 Card c = _deck.drawCard();
                 Players[i].giveCard(c);
@@ -80,6 +109,7 @@ public class Game implements IScene {
         Card discard = _deck.drawCard();
         _discard.addCard(discard);
         _discard.setTopCard(discard);
+        _discard.expectNextCardToBe(CardColor.valueOf(discard.getColor()));
         try {
             _terminal.enterPrivateMode();
             _terminal.addResizeListener(new SimpleTerminalResizeListener(new TerminalSize(100,30)));
@@ -94,11 +124,8 @@ public class Game implements IScene {
 
         Hand currPlayer = Players[_currentPlayer];
         _terminal.clearScreen();
-        _terminal.setCursorPosition(1, 0);
-        _terminal.putString(String.format("Player %d's turn", currPlayer.getId()));
 
         if (currPlayer.IsWinner()) {
-
             String winner = String.format("Player %d is the winner!", currPlayer.getId());
             String message = "Press any key to quit...";
             int x = getXCenterPos(winner);
@@ -108,25 +135,26 @@ public class Game implements IScene {
             x = getXCenterPos(message);
             _terminal.setCursorPosition(x, y + 1);
             _terminal.putString(message);
-            _terminal.readInput();
-            _game.Die();
         }
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // This section is going to remain hardcoded as it is meant to be at the bottom-left of the screen anyway.
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        int deckPosY = _terminal.getTerminalSize().getRows() - 2;
-        _discard.move(7, deckPosY);
+        int deckPosX = _terminal.getTerminalSize().getColumns() - 10;
+        int deckPosY = _terminal.getTerminalSize().getRows() / 2 + 5;
+        _discard.move(deckPosX - 20, deckPosY);
         _discard.draw(deltaTime);
-        _deck.move(1, deckPosY);
+        _deck.move(deckPosX - 26, deckPosY);
         _deck.draw(deltaTime);
         // -------------------------------------------------------------------------------------------------------
 
+        TerminalSize ts = _terminal.getTerminalSize();
+        TextGraphics tg = _terminal.newTextGraphics();
+        TextColor tc = new TextColor.RGB(23,23,23);
+        int dx = ts.getColumns() - 32;
+        int dy = 0;
+
+        // Ugly, but effective ;)
         if(_game.IsDebugModeSet()) {
-            TerminalSize ts = _terminal.getTerminalSize();
-            int dx = ts.getColumns() - 32;
-            int dy = 0;
-            TextGraphics tg = _terminal.newTextGraphics();
-            TextColor tc = new TextColor.RGB(23,23,23);
             _terminal.setCursorPosition(0,Players[_currentPlayer].getY());
             _terminal.enableSGR(SGR.BOLD);
             _terminal.putCharacter('>');
@@ -134,12 +162,15 @@ public class Game implements IScene {
             tg.setBackgroundColor(tc);
             tg.fillRectangle(new TerminalPosition(dx, dy), new TerminalSize(32, 5 + Players.length),' ');
             tg.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
+            tg.putString(dx, dy++, "F3: Disable Debug");
+            tg.putString(dx, dy++, "F5: Force Clear Color Flag");
+            tg.putString(dx, dy++, "ESC: Kill Game");
             tg.putString(dx, dy++, String.format("Current Player:  %02d", _currentPlayer + 1));
             tg.putString(dx, dy++, String.format("Deck count    : %03d", _deck.getCardCount()));
             tg.putString(dx, dy++, String.format("Discard count : %03d", _discard.getCardCount()));
             tg.putString(dx, dy, "Expected Color: ");
-            if(_deck.getNewColorIsExpected()) {
-                CardColor cc = _deck.getExpectedCardColor();
+            if(_discard.getNewColorIsExpected()) {
+                CardColor cc = _discard.getExpectedCardColor();
                 switch (cc) {
                     case Red:
                         tg.setBackgroundColor(TextColor.ANSI.RED_BRIGHT);
@@ -159,6 +190,11 @@ public class Game implements IScene {
             for (Hand player: Players) {
                 tg.putString(dx, dy++, String.format("Cards for Player %02d: %02d cards%32s", player.getId(), player.getCardCount(), " "));
             }
+        } else {
+            tg.setBackgroundColor(tc);
+            tg.fillRectangle(new TerminalPosition(dx, dy), new TerminalSize(32, 1),' ');
+            tg.setForegroundColor(TextColor.ANSI.WHITE_BRIGHT);
+            tg.putString(dx, dy, "F3: Debug");
         }
 
         for (int i = 0, playersLength = Players.length; i < playersLength; i++) {
@@ -178,7 +214,6 @@ public class Game implements IScene {
 
     @Override
     public void update(long deltaTime) throws IOException {
-
         KeyStroke ks = _terminal.pollInput();
         if(ks != null) {
             KeyType kt = ks.getKeyType();
@@ -186,36 +221,42 @@ public class Game implements IScene {
                 case F3:
                     _game.toggleView(ViewType.Debug);
                     break;
+                case F5:
+                    clearFlags(Expected.NewColor);
+                    break;
                 case Escape:
                     _game.Die();
                     break;
             }
         }
 
+        Hand player = Players[_currentPlayer];
+
+        if(player.IsWinner()) {
+            _terminal.readInput();
+            _game.Die();
+        }
+
+        player.playCard();
+        player.update(deltaTime);
+
 
         _deck.update(deltaTime);
 
         // If the deck is presumed empty, let's dump the contents of the discard pile into the deck and reshuffle.
         if (_deck.getIsDeckEmpty()) {
-            // Grab discard and reshuffle
-            Card dc;
-            while (_discard.getCardCount() > 0) {
-                dc = _discard.drawCard();
-                _deck.addCard(dc);
-                _deck.shuffle();
-            }
+            resetDeck();
         }
 
-        Hand player = Players[_currentPlayer];
-
-        player.playCard();
-        player.update(deltaTime);
-
         try {
-            Thread.sleep(200);
+            Thread.sleep(Limiter);
         } catch (InterruptedException e) {
             e.printStackTrace();
 
+        }
+
+        if(_discard.getNewColorIsExpected()) {
+            clearFlags(Expected.NewColor);
         }
 
         // We dislike negatives because it allows the rats to get in and chew up the wires.
@@ -262,6 +303,9 @@ public class Game implements IScene {
      */
     // IGNORE: Terrible hack implemented due to time constraints
     public void nextPlayerDrawsTwo() {
+        if(_deck.getCardCount() < 2) {
+            resetDeck();
+        }
         nextPlayer();
         int np = _currentPlayer;
         for(int i = 0; i < 2; i++) {
@@ -274,11 +318,30 @@ public class Game implements IScene {
      */
     // IGNORE: Terrible hack implemented due to time constraints
     public void nextPlayerDrawsFour() {
+        if(_deck.getCardCount() < 4) {
+            resetDeck();
+        }
         triggerWild();
         nextPlayer();
         int np = _currentPlayer % TotalPlayers;
         for(int i = 0; i < 4; i++) {
             Players[np].giveCard(_deck.drawCard());
+        }
+    }
+
+    /**
+     * Resets the deck by transferring the discard back to the deck and then... shuffles.
+     */
+    private void resetDeck() {
+        // Grab discard and reshuffle
+        Card dc;
+        while (_discard.getCardCount() > 0) {
+            dc = _discard.drawCard();
+            _deck.addCard(dc);
+            // Shuffles the deck... oh I don't know, maximum 10 times, randomly of course, else it's not a real shuffle.
+            for(int i = 0; i < com.toasternetwork.games.Game.Random.nextInt(10); i++) {
+                _deck.shuffle();
+            }
         }
     }
 
@@ -297,5 +360,8 @@ public class Game implements IScene {
     public void triggerWild() {
         CardColor color = CardColor.getRandom();
         _discard.expectNextCardToBe(color);
+    }
+
+    public void declareWinner() throws IOException {
     }
 }

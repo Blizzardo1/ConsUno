@@ -6,7 +6,6 @@ import com.toasternetwork.games.scenes.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Hand implements IGameObject {
     private ArrayList<Card> _hand;
@@ -35,16 +34,17 @@ public class Hand implements IGameObject {
         _hand.add(card);
     }
 
-    public void playCard() {
+    public void playCard() throws IOException {
+        if (getCardCount() == 0) {
+            _game.declareWinner();
+        }
         Deck discardPile = _game.getDiscardPile();
         Card discardReference = discardPile.getTopCard();
 
         if (_hand.stream().noneMatch(discardReference::isMatch)) {
             giveCard(_game.getDrawPile().drawCard());
         }
-        if (_hand.size() < 1) {
-            _isWinner = true;
-        }
+
         _hand.stream().reduce((card, card2) -> discardReference.isMatch(card) ? card : card2).ifPresent((card) -> {
             try {
                 if (discardPile.getNewColorIsExpected() && !card.getColor().equals(discardPile.getExpectedCardColor().getCardColor())) {
@@ -72,10 +72,11 @@ public class Hand implements IGameObject {
                     }
                     _hand.remove(card);
                     _hand.trimToSize();
-                    if (_hand.size() == 1) {
-                        _terminal.setCursorPosition(_x + 20, _y);
-                        _terminal.putString("UNO!");
+
+                    if (getCardCount() == 0) {
+                        _game.declareWinner();
                     }
+
                     _game.getDiscardPile().addCard(card);
                     _game.getDiscardPile().setTopCard(card);
                     if(discardPile.getNewColorIsExpected()) {
@@ -99,14 +100,27 @@ public class Hand implements IGameObject {
         if(_hand == null) return;
         _terminal.setCursorPosition(_x, _y);
         for (Card c : _hand) {
-            if (c == null) continue;
+            if (c == null) continue; // Is this still needed? Safety first!
             c.draw(deltaTime);
+        }
+
+        if (getCardCount() == 1) {
+            _terminal.setCursorPosition(_x + 6, _y);
+            _terminal.putString("UNO!");
         }
     }
 
     @Override
     public void update(long deltaTime) {
         _hand.trimToSize();
+        for(int c = 0; c < getCardCount(); c++) {
+            Card card = _hand.get(c);
+            card.move(_x + (c * Card.getWidth()), _y);
+            _hand.set(c, card);
+        }
+        if(getCardCount() == 0) {
+            _isWinner = true;
+        }
     }
 
     @Override
@@ -131,5 +145,9 @@ public class Hand implements IGameObject {
 
     public int getCardCount() {
         return _hand.size();
+    }
+
+    public void noLongerIsWinner() {
+        _isWinner = false;
     }
 }

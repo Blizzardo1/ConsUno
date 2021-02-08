@@ -1,2 +1,5 @@
 # Project exclude paths
 /out/
+/lib/annotations-20.1.0.jar
+/lib/lanterna-3.1.1-javadoc.jar
+/lib/lanterna-3.1.1-sources.jar

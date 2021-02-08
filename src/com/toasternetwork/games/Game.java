@@ -52,7 +52,7 @@ public class Game implements IGameObject {
         _debugMode = true; // Test with this to ensure Diagnostics are alive at start
         _isAlive = true;
         _scenes = new HashMap<>();
-        DefaultTerminalFactory dtf = new DefaultTerminalFactory().setInitialTerminalSize(new TerminalSize(120,40));
+        DefaultTerminalFactory dtf = new DefaultTerminalFactory().setInitialTerminalSize(new TerminalSize(125,50));
         try {
             _terminal = dtf.createTerminal();
             _terminal.setCursorVisible(false);

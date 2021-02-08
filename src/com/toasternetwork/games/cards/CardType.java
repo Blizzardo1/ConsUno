@@ -8,23 +8,23 @@ import java.util.Map;
  * A representation of the card's type
  */
 public enum CardType {
-    Zero(0, "| 0 |"),
-    One(1, "| 1 |"),
-    Two(2, "| 2 |"),
-    Three(3, "| 3 |"),
-    Four(4, "| 4 |"),
-    Five(5, "| 5 |"),
-    Six(6, "| 6 |"),
-    Seven(7, "| 7 |"),
-    Eight(8, "| 8 |"),
-    Nine(9, "| 9 |"),
-    Skip(10, "| Ø |"),
-    Reverse(11, "| R |"),
-    DrawTwo(12, "| +2|"),
-    Wild(13, "| W |"),
-    DrawFour(14, "| +4|"),
-    Face(254, "| U |"),
-    Blank(255, "   ");
+    Zero(0, "0"),
+    One(1, "1"),
+    Two(2, "2"),
+    Three(3, "3"),
+    Four(4, "4"),
+    Five(5, "5"),
+    Six(6, "6"),
+    Seven(7, "7"),
+    Eight(8, "8"),
+    Nine(9, "9"),
+    Skip(10, "Ø"),
+    Reverse(11, "R"),
+    DrawTwo(12, "+2"),
+    Wild(13, "W"),
+    DrawFour(14, "+4"),
+    Face(254, "U"),
+    Blank(255, " ");
 
     private final int _type;
     private final String _name;
